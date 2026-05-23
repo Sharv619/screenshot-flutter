@@ -1,44 +1,85 @@
-# Work Breakdown Structure (WBS) - 2-Week Sprint
+# Work Breakdown Structure (WBS) - Screenshot Action Inbox
 
-## Phase 1: Foundation (Week 1)
+## Phase 1: Validation and Research
 
-### Day 1-2: Project Initialization & UI Core
-- [ ] Initialize Flutter project (`flutter create`).
-- [ ] Set up project architecture (Clean Architecture or Layered).
-- [ ] Design and implement basic Theme and UI Skeleton (Home, Gallery, Settings).
-- [ ] Implement Permission Handling (Storage, Photos, Notifications).
+- Define MVP journeys for books, places/restaurants, receipts, and coupons.
+- Collect representative screenshot samples for each MVP category.
+- Validate manual import and share-to-app flows on Android and iOS.
+- Research Android Photo Picker, Selected Photos Access, MediaStore, and deletion confirmation.
+- Research iOS PhotoKit selected access, share extension constraints, and deletion confirmation.
+- Draft App Store and Play Store permission explanations.
+- Define local-only mode and optional enrichment mode boundaries.
 
-### Day 3-4: Background Services & Detection
-- [ ] Implement File System Watcher for screenshot directories.
-- [ ] Create Method Channels for platform-specific screenshot detection (Android `ContentObserver`, iOS `UIApplicationUserDidTakeScreenshotNotification`).
-- [ ] Set up background service/work manager.
+## Phase 2: Core Flutter App Shell
 
-### Day 5: Data Persistence
-- [ ] Set up local database (Isar or SQLite).
-- [ ] Define schemas for Screenshots, Categories, and Tags.
-- [ ] Implement CRUD operations for screenshot metadata.
+- Initialize the Flutter project after planning approval.
+- Set up feature-first project structure.
+- Add Riverpod state management.
+- Build inbox, review, saved lists, search, and settings navigation.
+- Create reusable action card UI components.
+- Build permission education screens and empty states.
+- Add local theme and accessibility baseline.
 
----
+## Phase 3: OCR and Local Processing
 
-## Phase 2: Intelligence & Refinement (Week 2)
+- Implement manual screenshot import.
+- Implement share-to-app ingestion.
+- Create local screenshot metadata records.
+- Integrate Android OCR with Google ML Kit.
+- Integrate iOS OCR with Apple Vision or equivalent platform OCR.
+- Build text normalization utilities.
+- Implement rule-based entity extraction for books, places/restaurants, receipts, and coupons.
+- Implement category scoring and confidence output.
+- Add processing queue and retry handling.
 
-### Day 6-7: ML Kit Integration
-- [ ] Integrate Google ML Kit (Android) / Apple Vision (iOS) via plugins.
-- [ ] Implement OCR pipeline for text extraction.
-- [ ] Implement Image Labeling for visual context.
+## Phase 4: Action Cards and Saved Lists
 
-### Day 8-9: Categorization Engine
-- [ ] Develop logic to map OCR/Labels to Categories.
-- [ ] Implement a lightweight classification model (e.g., KNN on text embeddings or Keyword Matching).
-- [ ] Enable auto-folder creation based on category results.
+- Generate action cards from extracted entities and category scores.
+- Build book action card and reading list save flow.
+- Build place/restaurant action card and maps open flow.
+- Build receipt action card and receipt details save flow.
+- Build coupon action card and coupon save flow.
+- Implement saved lists or collections.
+- Implement local search across OCR text and structured fields.
+- Add user correction flow for extracted fields.
 
-### Day 10-12: Advanced UI & Search
-- [ ] Build Category-based Gallery views.
-- [ ] Implement full-text search across all screenshots.
-- [ ] Add manual categorization and tagging UI.
+## Phase 5: Cleanup / Delete Flow
 
-### Day 13-14: Testing & Deployment Prep
-- [ ] Unit and Integration testing for the categorization logic.
-- [ ] Performance profiling (Battery & Memory).
-- [ ] Final UI Polish and documentation.
-- [ ] Build generation (APK/IPA).
+- Add cleanup prompt after a user saves details or completes an action.
+- Implement Android deletion via `MediaStore.createDeleteRequest`.
+- Implement iOS deletion via `PHAssetChangeRequest`.
+- Handle declined, failed, and completed deletion states.
+- Make deletion copy explicit that the OS will confirm removal.
+- Test no silent deletion paths exist.
+- Document cleanup permission and store review messaging.
+
+## Phase 6: Optional Enrichment
+
+- Add settings toggle for optional enrichment mode.
+- Implement disclosure copy explaining what extracted fields may be sent.
+- Integrate Google Books API for opt-in book metadata.
+- Integrate Google Places API for opt-in place details.
+- Cache enrichment results locally.
+- Add API failure and quota handling.
+- Verify local-only mode makes no enrichment network calls.
+
+## Phase 7: Optional Background Detection
+
+- Evaluate selected-photo access and screenshot folder monitoring after MVP flows are stable.
+- Prototype Android MediaStore screenshot folder monitoring if permission and policy review supports it.
+- Prototype iOS PhotoKit change observation where selected access and policy allow it.
+- Measure battery impact and processing frequency.
+- Add user-facing opt-in controls for any monitoring feature.
+- Keep manual import and share-to-app as fallback paths.
+
+## Phase 8: Testing, Store Readiness, and Launch
+
+- Write unit tests for normalization, extraction, category scoring, and action generation.
+- Write persistence and search tests.
+- Run device tests for import, share, OCR, action cards, and delete confirmation.
+- Run privacy tests for local-only mode.
+- Test permission denial and limited-access states.
+- Profile OCR speed, memory, and battery use.
+- Prepare App Store and Play Store privacy labels and permission explanations.
+- Create demo dataset and review script.
+- Prepare launch checklist and known limitations.
